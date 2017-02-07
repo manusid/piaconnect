@@ -5,24 +5,27 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.android.volley.toolbox.ImageLoader;
 
 import org.peenyaindustries.piaconnect.R;
-import org.peenyaindustries.piaconnect.models.Category;
+import org.peenyaindustries.piaconnect.models.Post;
 import org.peenyaindustries.piaconnect.network.VolleySingleton;
+import org.peenyaindustries.piaconnect.utilities.L;
 
 import java.util.ArrayList;
 
-public class SinglePostAdapter extends RecyclerView.Adapter<SinglePostAdapter.ViewHolder>{
+public class SinglePostAdapter extends RecyclerView.Adapter<SinglePostAdapter.ViewHolder> {
 
     private Context context;
-    private ArrayList<Category> postsArrayList;
+    private ArrayList<Post> postArrayList;
     private ImageLoader imageLoader;
 
-    public SinglePostAdapter(Context context, ArrayList<Category> postsArrayList) {
+    public SinglePostAdapter(Context context, ArrayList<Post> postArrayList) {
         this.context = context;
-        this.postsArrayList = postsArrayList;
+        this.postArrayList = postArrayList;
         imageLoader = VolleySingleton.getInstance().getImageLoader();
     }
 
@@ -34,19 +37,31 @@ public class SinglePostAdapter extends RecyclerView.Adapter<SinglePostAdapter.Vi
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-
+        Post postModel = postArrayList.get(position);
+        L.Log("" + position + " - " + postModel.getCategoryId() + " - " + postModel.getTitle());
+        holder.postText.setText(postModel.getTitle());
     }
 
     @Override
     public int getItemCount() {
-        return 5;
+        if (postArrayList.size() < 5) {
+            return postArrayList.size();
+        } else {
+            return 5;
+        }
     }
 
 
-    public class ViewHolder extends RecyclerView.ViewHolder{
+    public class ViewHolder extends RecyclerView.ViewHolder {
+
+        ImageView postImage;
+        TextView postText;
 
         public ViewHolder(View itemView) {
             super(itemView);
+
+            postImage = (ImageView) itemView.findViewById(R.id.postImage);
+            postText = (TextView) itemView.findViewById(R.id.postText);
         }
     }
 }

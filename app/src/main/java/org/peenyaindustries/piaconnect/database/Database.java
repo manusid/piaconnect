@@ -195,10 +195,10 @@ public class Database {
                 DatabaseHelper.P_THUMBNAIL_URL,
                 DatabaseHelper.P_IMAGE_URL,};
 
-        String WHERE = DatabaseHelper.P_CATEGORY_ID + "LIKE ?";
-        String args[] = {"%" + categoryId + "%"};
+        String WHERE = DatabaseHelper.P_CATEGORY_ID + " LIKE ?";
+        String args = "%" + categoryId + "%";
 
-        Cursor cursor = database.query(DatabaseHelper.POST_TABLE, column, args[0], null, null, null, null);
+        Cursor cursor = database.query(DatabaseHelper.POST_TABLE, column, WHERE, new String[]{args}, null, null, null);
         try {
             if (cursor != null && cursor.moveToFirst()) {
                 do {
@@ -287,10 +287,9 @@ public class Database {
 
         public static final String DROP_CATEGORY_TABLE = "DROP TABLE " + CATEGORY_TABLE + " IF EXISTS";
         public static final String DROP_POST_TABLE = "DROP TABLE " + POST_TABLE + " IF EXISTS";
-
-        private Context context;
         private static String DATABASE_NAME = "piaconnect";
         private static int DATABASE_VERSION = 1;
+        private Context context;
 
 
         /**

@@ -23,7 +23,7 @@ public class NewsUtils {
 
     //TODO - URL IS EMPTY
     public static ArrayList<Post> loadPosts(RequestQueue requestQueue){
-        JSONObject response = Requestor.requestCategory(requestQueue, "http://www.peenyaindustries.org/api/get_posts/");
+        JSONObject response = Requestor.requestPost(requestQueue, "http://www.peenyaindustries.org/api/get_posts/");
         ArrayList<Post> postArrayList = Parser.parsePost(response);
         MyApplication.getWritableDatabase().insertPost(postArrayList, true);
         return postArrayList;
