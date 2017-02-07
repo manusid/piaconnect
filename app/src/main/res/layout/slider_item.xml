@@ -5,6 +5,7 @@
     android:layout_height="200dp"
     android:layout_gravity="center"
     android:layout_margin="5dp"
+    android:clickable="true"
     android:orientation="vertical"
     app:cardCornerRadius="2dp"
     app:cardMaxElevation="2dp"
@@ -18,13 +19,17 @@
         <ImageView
             android:id="@+id/sliderImage"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent"
+            android:scaleType="fitXY" />
 
         <TextView
             android:id="@+id/sliderText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
+            android:background="@drawable/background_stripe"
+            android:padding="5dp"
+            android:textAlignment="center"
             android:textColor="@android:color/white"
             android:textSize="16sp"
             android:textStyle="bold" />

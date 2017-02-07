@@ -5,15 +5,15 @@ import android.util.Log;
 import android.widget.Toast;
 
 public class L {
-    public static void Log(String message){
+    public static void Log(String message) {
         Log.d("PIAConnect", message);
     }
 
-    public static void ToastShort(Context context, String message){
+    public static void ToastShort(Context context, String message) {
         Toast.makeText(context, message, Toast.LENGTH_SHORT).show();
     }
 
-    public static void ToastLong(Context context, String message){
+    public static void ToastLong(Context context, String message) {
         Toast.makeText(context, message, Toast.LENGTH_LONG).show();
     }
 }

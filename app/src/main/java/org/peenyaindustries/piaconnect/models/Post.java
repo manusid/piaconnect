@@ -3,12 +3,10 @@ package org.peenyaindustries.piaconnect.models;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-public class Post implements Parcelable{
+public class Post implements Parcelable {
 
-    private String postId, categoryId, type, url, status, title, content, excerpt, date, commentCount, thumbnailUrl, imageUrl;
-
-    public static final Parcelable.Creator<Post> CREATOR = new Parcelable.Creator<Post>(){
-        public Post createFromParcel(Parcel in){
+    public static final Parcelable.Creator<Post> CREATOR = new Parcelable.Creator<Post>() {
+        public Post createFromParcel(Parcel in) {
             return new Post(in);
         }
 
@@ -17,6 +15,7 @@ public class Post implements Parcelable{
             return new Post[size];
         }
     };
+    private String postId, categoryId, type, url, status, title, content, excerpt, date, commentCount, thumbnailUrl, imageUrl;
 
     public Post(String postId, String categoryId, String type, String url, String status, String title, String content, String excerpt, String date, String commentCount, String thumbnailUrl, String imageUrl) {
         this.postId = postId;

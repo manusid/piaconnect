@@ -26,7 +26,7 @@ import org.peenyaindustries.piaconnect.tasks.TaskLoadPost;
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener , CategoryLoadedListener, PostLoadedListener{
+        implements NavigationView.OnNavigationItemSelectedListener, CategoryLoadedListener, PostLoadedListener {
 
     //The key used to store array list of data objects to and from parcelable
     private static final String STATE_POST = "state_post";
@@ -46,6 +46,8 @@ public class MainActivity extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
+
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -62,18 +64,6 @@ public class MainActivity extends AppCompatActivity
         sliderAdapter = new SliderViewAdapter(this, postArrayList);
         sliderView.setAdapter(sliderAdapter);
 
-        if (savedInstanceState != null){
-            postArrayList = savedInstanceState.getParcelableArrayList(STATE_POST);
-        }else{
-            postArrayList = MyApplication.getWritableDatabase().readPosts();
-
-            if (postArrayList.isEmpty()){
-                new TaskLoadPost(this).execute();
-            }
-        }
-
-        sliderAdapter.setPost(postArrayList);
-
         categoryPostView = (RecyclerView) findViewById(R.id.categoryPostView);
         categoryPostView.setNestedScrollingEnabled(false);
         categoryPostView.setHasFixedSize(true);
@@ -81,16 +71,27 @@ public class MainActivity extends AppCompatActivity
         categoryAdapter = new CategoryViewAdapter(this);
         categoryPostView.setAdapter(categoryAdapter);
 
-        if (savedInstanceState != null){
+        if (savedInstanceState != null) {
+            postArrayList = savedInstanceState.getParcelableArrayList(STATE_POST);
             categoryArrayList = savedInstanceState.getParcelableArrayList(STATE_CATEGORY);
-        }else{
-            categoryArrayList = MyApplication.getWritableDatabase().readCategory();
+        } else {
 
-            if (categoryArrayList.isEmpty()){
+            //categoryArrayList = MyApplication.getWritableDatabase().readCategory();
+            categoryArrayList = loadValueManually();
+            postArrayList = MyApplication.getWritableDatabase().readPosts();
+
+            if (categoryArrayList.isEmpty()) {
+
+            }
+
+            if (postArrayList.isEmpty()) {
+                new TaskLoadPost(this).execute();
                 new TaskLoadCategory(this).execute();
             }
         }
+
         categoryAdapter.setCategory(categoryArrayList);
+        sliderAdapter.setPost(postArrayList);
     }
 
     @Override
@@ -166,5 +167,47 @@ public class MainActivity extends AppCompatActivity
     @Override
     public void onPostLoadedListener(ArrayList<Post> postArrayList) {
         sliderAdapter.setPost(postArrayList);
+    }
+
+    public ArrayList<Category> loadValueManually() {
+
+        ArrayList<Category> categoryManualArrayList = new ArrayList<>();
+
+        ArrayList<String> categoryTitleArray = new ArrayList<>();
+        categoryTitleArray.add(0, "PIA News");
+        categoryTitleArray.add(1, "Peenya News");
+        categoryTitleArray.add(2, "Message");
+        categoryTitleArray.add(3, "News");
+
+        ArrayList<String> categoryIdArray = new ArrayList<>();
+        categoryIdArray.add(0, "1");
+        categoryIdArray.add(1, "26");
+        categoryIdArray.add(2, "18");
+        categoryIdArray.add(3, "30");
+
+        ArrayList<String> categoryDescriptionArray = new ArrayList<>();
+        categoryDescriptionArray.add(0, "NA");
+        categoryDescriptionArray.add(1, "NA");
+        categoryDescriptionArray.add(2, "NA");
+        categoryDescriptionArray.add(3, "NA");
+
+        ArrayList<String> categoryParentArray = new ArrayList<>();
+        categoryParentArray.add(0, "0");
+        categoryParentArray.add(1, "0");
+        categoryParentArray.add(2, "0");
+        categoryParentArray.add(3, "0");
+
+        for (int i = 0; i < categoryTitleArray.size(); i++) {
+            Category categoryModel = new Category();
+
+            categoryModel.setCategoryId(categoryIdArray.get(i));
+            categoryModel.setTitle(categoryTitleArray.get(i));
+            categoryModel.setDescription(categoryDescriptionArray.get(i));
+            categoryModel.setParent(categoryParentArray.get(i));
+
+            categoryManualArrayList.add(categoryModel);
+        }
+
+        return categoryManualArrayList;
     }
 }

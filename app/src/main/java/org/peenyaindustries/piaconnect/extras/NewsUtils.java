@@ -11,19 +11,20 @@ import org.peenyaindustries.piaconnect.piaconnect.MyApplication;
 
 import java.util.ArrayList;
 
+import static org.peenyaindustries.piaconnect.extras.URLEndPoints.URL_CATEGORY;
+import static org.peenyaindustries.piaconnect.extras.URLEndPoints.URL_POST;
+
 public class NewsUtils {
 
-    //TODO - URL IS EMPTY
-    public static ArrayList<Category> loadCategories(RequestQueue requestQueue){
-        JSONObject response = Requestor.requestCategory(requestQueue, "http://www.peenyaindustries.org/api/get_category_index/");
+    public static ArrayList<Category> loadCategories(RequestQueue requestQueue) {
+        JSONObject response = Requestor.requestCategory(requestQueue, URL_CATEGORY);
         ArrayList<Category> categoryArrayList = Parser.parseCategory(response);
         MyApplication.getWritableDatabase().insertCategory(categoryArrayList, true);
         return categoryArrayList;
     }
 
-    //TODO - URL IS EMPTY
-    public static ArrayList<Post> loadPosts(RequestQueue requestQueue){
-        JSONObject response = Requestor.requestPost(requestQueue, "http://www.peenyaindustries.org/api/get_posts/");
+    public static ArrayList<Post> loadPosts(RequestQueue requestQueue) {
+        JSONObject response = Requestor.requestPost(requestQueue, URL_POST);
         ArrayList<Post> postArrayList = Parser.parsePost(response);
         MyApplication.getWritableDatabase().insertPost(postArrayList, true);
         return postArrayList;

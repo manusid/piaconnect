@@ -10,14 +10,16 @@ import com.android.volley.toolbox.Volley;
 import org.peenyaindustries.piaconnect.piaconnect.MyApplication;
 
 public class VolleySingleton {
-    private static VolleySingleton sInstance=null;
+    private static VolleySingleton sInstance = null;
     private ImageLoader mImageLoader;
     private RequestQueue mRequestQueue;
-    private VolleySingleton(){
-        mRequestQueue= Volley.newRequestQueue(MyApplication.getAppContext());
-        mImageLoader=new ImageLoader(mRequestQueue,new ImageLoader.ImageCache() {
 
-            private LruCache<String, Bitmap> cache=new LruCache<>((int)(Runtime.getRuntime().maxMemory()/1024)/8);
+    private VolleySingleton() {
+        mRequestQueue = Volley.newRequestQueue(MyApplication.getAppContext());
+        mImageLoader = new ImageLoader(mRequestQueue, new ImageLoader.ImageCache() {
+
+            private LruCache<String, Bitmap> cache = new LruCache<>((int) (Runtime.getRuntime().maxMemory() / 1024) / 8);
+
             @Override
             public Bitmap getBitmap(String url) {
                 return cache.get(url);
@@ -29,17 +31,19 @@ public class VolleySingleton {
             }
         });
     }
-    public static VolleySingleton getInstance(){
-        if(sInstance==null)
-        {
-            sInstance=new VolleySingleton();
+
+    public static VolleySingleton getInstance() {
+        if (sInstance == null) {
+            sInstance = new VolleySingleton();
         }
         return sInstance;
     }
-    public RequestQueue getRequestQueue(){
+
+    public RequestQueue getRequestQueue() {
         return mRequestQueue;
     }
-    public ImageLoader getImageLoader(){
+
+    public ImageLoader getImageLoader() {
         return mImageLoader;
     }
 }

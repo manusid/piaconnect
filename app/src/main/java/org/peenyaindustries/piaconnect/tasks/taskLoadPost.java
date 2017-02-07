@@ -11,13 +11,13 @@ import org.peenyaindustries.piaconnect.network.VolleySingleton;
 
 import java.util.ArrayList;
 
-public class TaskLoadPost extends AsyncTask<Void, Void, ArrayList<Post>>{
+public class TaskLoadPost extends AsyncTask<Void, Void, ArrayList<Post>> {
 
     private PostLoadedListener myComponent;
     private VolleySingleton volleySingleton;
     private RequestQueue requestQueue;
 
-    public TaskLoadPost(PostLoadedListener myComponent){
+    public TaskLoadPost(PostLoadedListener myComponent) {
 
         this.myComponent = myComponent;
         volleySingleton = VolleySingleton.getInstance();
@@ -32,7 +32,7 @@ public class TaskLoadPost extends AsyncTask<Void, Void, ArrayList<Post>>{
 
     @Override
     protected void onPostExecute(ArrayList<Post> postArrayList) {
-        if (myComponent != null){
+        if (myComponent != null) {
             myComponent.onPostLoadedListener(postArrayList);
         }
     }

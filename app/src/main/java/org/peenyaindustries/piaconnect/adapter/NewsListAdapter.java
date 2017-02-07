@@ -15,38 +15,63 @@ import com.android.volley.toolbox.ImageLoader;
 import org.peenyaindustries.piaconnect.R;
 import org.peenyaindustries.piaconnect.activities.NewsDetailActivity;
 import org.peenyaindustries.piaconnect.extras.Constants;
+import org.peenyaindustries.piaconnect.models.Category;
 import org.peenyaindustries.piaconnect.models.Post;
 import org.peenyaindustries.piaconnect.network.VolleySingleton;
+import org.peenyaindustries.piaconnect.piaconnect.MyApplication;
 import org.peenyaindustries.piaconnect.storage.SessionManager;
+import org.peenyaindustries.piaconnect.utilities.L;
 
 import java.util.ArrayList;
 
-public class SinglePostAdapter extends RecyclerView.Adapter<SinglePostAdapter.ViewHolder> {
+public class NewsListAdapter extends RecyclerView.Adapter<NewsListAdapter.ViewHolder> {
 
     private Context context;
     private ArrayList<Post> postArrayList;
     private ImageLoader imageLoader;
+    private String categoryId;
 
-    public SinglePostAdapter(Context context, ArrayList<Post> postArrayList) {
+    public NewsListAdapter(Context context, String id) {
         this.context = context;
-        this.postArrayList = postArrayList;
+        this.categoryId = id;
         imageLoader = VolleySingleton.getInstance().getImageLoader();
+    }
+
+    public void setPost(ArrayList<Post> postArrayList, String categoryId) {
+        this.postArrayList = postArrayList;
+        this.categoryId = categoryId;
+
+        notifyDataSetChanged();
     }
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.post_item, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.news_list, parent, false);
         return new ViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
+
         Post postModel = postArrayList.get(position);
+        L.Log("CategoryId Intitated" + categoryId);
 
-        holder.postText.setText(postModel.getTitle());
+        ArrayList<Category> categoryArrayList = MyApplication.getWritableDatabase().readCategoryById(categoryId);
 
-        String urlThumbnail = postModel.getThumbnailUrl();
-        loadImages(urlThumbnail, holder);
+
+        if (categoryArrayList.size() != 0) {
+            for (int i = 0; i < categoryArrayList.size(); i++) {
+                Category categoryModel = categoryArrayList.get(i);
+                holder.newsListCategory.setText(categoryModel.getTitle());
+            }
+        }
+
+
+        holder.newsListTitle.setText(postModel.getTitle());
+        holder.newsListExcerpt.setText(postModel.getExcerpt());
+
+        String imageUrl = postModel.getImageUrl();
+        loadImages(imageUrl, holder);
 
         holder.postId = postModel.getPostId();
         holder.postType = postModel.getType();
@@ -58,8 +83,9 @@ public class SinglePostAdapter extends RecyclerView.Adapter<SinglePostAdapter.Vi
         holder.postDate = postModel.getDate();
         holder.postCommentCount = postModel.getCommentCount();
         holder.postCategory = postModel.getCategoryId();
-        holder.postThumbnailUrl = postModel.getThumbnailUrl();
-        holder.postImageUrl = postModel.getImageUrl();
+        holder.postThumbnail = postModel.getThumbnailUrl();
+        holder.postImage = postModel.getImageUrl();
+
     }
 
     private void loadImages(String urlThumbnail, final ViewHolder holder) {
@@ -67,7 +93,7 @@ public class SinglePostAdapter extends RecyclerView.Adapter<SinglePostAdapter.Vi
             imageLoader.get(urlThumbnail, new ImageLoader.ImageListener() {
                 @Override
                 public void onResponse(ImageLoader.ImageContainer response, boolean isImmediate) {
-                    holder.postImage.setImageBitmap(response.getBitmap());
+                    holder.newsListImage.setImageBitmap(response.getBitmap());
                 }
 
                 @Override
@@ -80,32 +106,34 @@ public class SinglePostAdapter extends RecyclerView.Adapter<SinglePostAdapter.Vi
 
     @Override
     public int getItemCount() {
-        if (postArrayList.size() < 5) {
-            return postArrayList.size();
-        } else {
-            return 5;
-        }
+        return postArrayList.size();
     }
 
+    public void setFilter(ArrayList<Post> mNewsModel) {
+        postArrayList = new ArrayList<>();
+        postArrayList.addAll(mNewsModel);
+        notifyDataSetChanged();
+    }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
 
-        ImageView postImage;
-        TextView postText;
-        String postId, postType, postUrl, postStatus, postTitle, postContent, postExcerpt, postDate, postCommentCount, postCategory, postThumbnailUrl, postImageUrl;
+        ImageView newsListImage;
+        TextView newsListCategory, newsListTitle, newsListExcerpt;
+        String postId, postType, postUrl, postStatus, postTitle, postContent, postExcerpt, postDate, postCommentCount, postCategory, postThumbnail, postImage;
 
 
         public ViewHolder(View itemView) {
             super(itemView);
-
-            postImage = (ImageView) itemView.findViewById(R.id.postImage);
-            postText = (TextView) itemView.findViewById(R.id.postText);
+            newsListImage = (ImageView) itemView.findViewById(R.id.newsListImage);
+            newsListCategory = (TextView) itemView.findViewById(R.id.newsListCategory);
+            newsListTitle = (TextView) itemView.findViewById(R.id.newsListTitle);
+            newsListExcerpt = (TextView) itemView.findViewById(R.id.newsListExcerpt);
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     SessionManager session = new SessionManager(context);
-                    session.storeData(postId, postType, postUrl, postStatus, postTitle, postContent, postExcerpt, postDate, postCommentCount, postCategory, postThumbnailUrl, postImageUrl);
+                    session.storeData(postId, postType, postUrl, postStatus, postTitle, postContent, postExcerpt, postDate, postCommentCount, postCategory, postThumbnail, postImage);
                     context.startActivity(new Intent(context, NewsDetailActivity.class));
                 }
             });

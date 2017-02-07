@@ -1,4 +1,4 @@
-package org.peenyaindustries.piaconnect.database;
+package org.peenyaindustries.piaconnect.storage;
 
 import android.content.Context;
 import android.database.Cursor;
@@ -52,8 +52,6 @@ public class Database {
         }
 
         //set transaction as successful and end transaction
-        //TODO - DELETE
-        L.Log("inserted categories size - " + categoryArrayList.size());
         database.setTransactionSuccessful();
         database.endTransaction();
     }
@@ -92,8 +90,7 @@ public class Database {
         }
 
         //set transaction as successful and end transaction
-        //TODO - DELETE
-        L.Log("inserted post size - " + postArrayList.size());
+
         database.setTransactionSuccessful();
         database.endTransaction();
     }
@@ -102,7 +99,7 @@ public class Database {
      * Read data from SQLite Database
      */
     public ArrayList<Category> readCategory() {
-
+        L.Log("Start");
         ArrayList<Category> categoryArrayList = new ArrayList<>();
 
         String[] column = {DatabaseHelper.C_ID,
@@ -111,6 +108,43 @@ public class Database {
                 DatabaseHelper.C_PARENT};
 
         Cursor cursor = database.query(DatabaseHelper.CATEGORY_TABLE, column, null, null, null, null, null);
+        L.Log("" + cursor);
+        try {
+            if (cursor != null && cursor.moveToFirst()) {
+                do {
+                    Category categoryModel = new Category();
+
+                    categoryModel.setCategoryId(cursor.getString(cursor.getColumnIndex(DatabaseHelper.C_ID)));
+                    categoryModel.setTitle(cursor.getString(cursor.getColumnIndex(DatabaseHelper.C_TITLE)));
+                    categoryModel.setDescription(cursor.getString(cursor.getColumnIndex(DatabaseHelper.C_DESCRIPTION)));
+                    categoryModel.setParent(cursor.getString(cursor.getColumnIndex(DatabaseHelper.C_PARENT)));
+
+                    categoryArrayList.add(categoryModel);
+                } while (cursor.moveToNext());
+            }
+        } finally {
+            if (cursor != null && !cursor.isClosed())
+                cursor.close();
+        }
+        L.Log("Array Size" + categoryArrayList.size());
+        return categoryArrayList;
+    }
+
+    /**
+     * Read data from SQLite Database
+     */
+    public ArrayList<Category> readCategoryById(String categoryId) {
+
+        ArrayList<Category> categoryArrayList = new ArrayList<>();
+
+        String[] column = {DatabaseHelper.C_ID,
+                DatabaseHelper.C_TITLE,
+                DatabaseHelper.C_DESCRIPTION,
+                DatabaseHelper.C_PARENT};
+
+        String WHERE = "categoryId = ?";
+
+        Cursor cursor = database.query(DatabaseHelper.CATEGORY_TABLE, column, WHERE, new String[]{categoryId}, null, null, null);
         try {
             if (cursor != null && cursor.moveToFirst()) {
                 do {
@@ -242,35 +276,35 @@ public class Database {
 
     private static class DatabaseHelper extends SQLiteOpenHelper {
 
-        public static final String CATEGORY_TABLE = "category";
-        public static final String POST_TABLE = "post";
+        static final String CATEGORY_TABLE = "category";
+        static final String POST_TABLE = "post";
 
-        public static final String UID = "_id";
-        public static final String C_ID = "categoryId";
-        public static final String C_TITLE = "title";
-        public static final String C_DESCRIPTION = "description";
-        public static final String C_PARENT = "parent";
-        public static final String P_ID = "postId";
-        public static final String P_CATEGORY_ID = "categoryId";
-        public static final String P_TYPE = "type";
-        public static final String P_URL = "url";
-        public static final String P_STATUS = "status";
-        public static final String P_TITLE = "title";
-        public static final String P_CONTENT = "content";
-        public static final String P_EXCERPT = "excerpt";
-        public static final String P_DATE = "date";
-        public static final String P_COMMENT_COUNT = "commentCount";
-        public static final String P_THUMBNAIL_URL = "thumbnailUrl";
-        public static final String P_IMAGE_URL = "imageUrl";
+        static final String UID = "_id";
+        static final String C_ID = "categoryId";
+        static final String C_TITLE = "title";
+        static final String C_DESCRIPTION = "description";
+        static final String C_PARENT = "parent";
+        static final String P_ID = "postId";
+        static final String P_CATEGORY_ID = "categoryId";
+        static final String P_TYPE = "type";
+        static final String P_URL = "url";
+        static final String P_STATUS = "status";
+        static final String P_TITLE = "title";
+        static final String P_CONTENT = "content";
+        static final String P_EXCERPT = "excerpt";
+        static final String P_DATE = "date";
+        static final String P_COMMENT_COUNT = "commentCount";
+        static final String P_THUMBNAIL_URL = "thumbnailUrl";
+        static final String P_IMAGE_URL = "imageUrl";
 
-        public static final String CREATE_CATEGORY_TABLE = "CREATE TABLE " + CATEGORY_TABLE + " (" +
+        static final String CREATE_CATEGORY_TABLE = "CREATE TABLE " + CATEGORY_TABLE + " (" +
                 UID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 C_ID + " TEXT, " +
                 C_TITLE + " TEXT, " +
                 C_DESCRIPTION + " LONGTEXT, " +
                 C_PARENT + " TEXT );";
 
-        public static final String CREATE_POST_TABLE = " CREATE TABLE " + POST_TABLE + " (" +
+        static final String CREATE_POST_TABLE = " CREATE TABLE " + POST_TABLE + " (" +
                 UID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 P_ID + " TEXT, " +
                 P_CATEGORY_ID + " TEXT, " +
@@ -285,8 +319,8 @@ public class Database {
                 P_THUMBNAIL_URL + " VARCHAR(1000), " +
                 P_IMAGE_URL + " VARCHAR(1000) );";
 
-        public static final String DROP_CATEGORY_TABLE = "DROP TABLE " + CATEGORY_TABLE + " IF EXISTS";
-        public static final String DROP_POST_TABLE = "DROP TABLE " + POST_TABLE + " IF EXISTS";
+        static final String DROP_CATEGORY_TABLE = "DROP TABLE " + CATEGORY_TABLE + " IF EXISTS";
+        static final String DROP_POST_TABLE = "DROP TABLE " + POST_TABLE + " IF EXISTS";
         private static String DATABASE_NAME = "piaconnect";
         private static int DATABASE_VERSION = 1;
         private Context context;
@@ -297,7 +331,7 @@ public class Database {
          *
          * @param context
          */
-        public DatabaseHelper(Context context) {
+        DatabaseHelper(Context context) {
             super(context, DATABASE_NAME, null, DATABASE_VERSION);
             this.context = context;
         }
@@ -308,10 +342,9 @@ public class Database {
             try {
                 db.execSQL(CREATE_CATEGORY_TABLE);
                 db.execSQL(CREATE_POST_TABLE);
-                L.Log("Tables created successfully");
+
             } catch (SQLException e) {
-                //TODO - DELETE
-                L.Log("Tables Updated Successfully");
+
                 L.Log("" + e);
             }
 
@@ -323,12 +356,9 @@ public class Database {
             try {
                 db.execSQL(DROP_CATEGORY_TABLE);
                 db.execSQL(DROP_POST_TABLE);
-                //TODO - DELETE
-                L.Log("Tables Updated Successfully");
+
                 onCreate(db);
             } catch (SQLException e) {
-                //TODO - DELETE
-                L.Log("Tables Updated Successfully");
                 L.Log("" + e);
             }
 

@@ -13,13 +13,13 @@ import java.util.concurrent.TimeoutException;
 
 public class Requestor {
 
-    public static JSONObject requestCategory(RequestQueue requestQueue, String url){
+    public static JSONObject requestCategory(RequestQueue requestQueue, String url) {
 
         JSONObject response = null;
 
         RequestFuture<JSONObject> requestFuture = RequestFuture.newFuture();
 
-        JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, (String)null, requestFuture, requestFuture);
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, (String) null, requestFuture, requestFuture);
 
         requestQueue.add(request);
 
@@ -32,13 +32,13 @@ public class Requestor {
         return response;
     }
 
-    public static JSONObject requestPost(RequestQueue requestQueue, String url){
+    public static JSONObject requestPost(RequestQueue requestQueue, String url) {
 
         JSONObject response = null;
 
         RequestFuture<JSONObject> requestFuture = RequestFuture.newFuture();
 
-        JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, (String)null, requestFuture, requestFuture);
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, (String) null, requestFuture, requestFuture);
 
         requestQueue.add(request);
 

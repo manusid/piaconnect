@@ -17,7 +17,7 @@ public class TaskLoadCategory extends AsyncTask<Void, Void, ArrayList<Category>>
     private VolleySingleton volleySingleton;
     private RequestQueue requestQueue;
 
-    public TaskLoadCategory(CategoryLoadedListener myComponent){
+    public TaskLoadCategory(CategoryLoadedListener myComponent) {
 
         this.myComponent = myComponent;
         volleySingleton = VolleySingleton.getInstance();
@@ -32,7 +32,7 @@ public class TaskLoadCategory extends AsyncTask<Void, Void, ArrayList<Category>>
 
     @Override
     protected void onPostExecute(ArrayList<Category> categoryArrayList) {
-        if (myComponent != null){
+        if (myComponent != null) {
             myComponent.onCategoryLoadedListener(categoryArrayList);
         }
     }

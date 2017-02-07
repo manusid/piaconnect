@@ -3,13 +3,11 @@ package org.peenyaindustries.piaconnect.models;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-public class Category implements Parcelable{
+public class Category implements Parcelable {
 
-    private String categoryId, postId, title, description, parent;
+    public static final Parcelable.Creator<Category> CREATOR = new Parcelable.Creator<Category>() {
 
-    public static final Parcelable.Creator<Category> CREATOR = new Parcelable.Creator<Category>(){
-
-        public Category createFromParcel(Parcel in){
+        public Category createFromParcel(Parcel in) {
             return new Category(in);
         }
 
@@ -19,6 +17,7 @@ public class Category implements Parcelable{
         }
 
     };
+    private String categoryId, postId, title, description, parent;
 
     public Category(String categoryId, String postId, String title, String description, String parent) {
         this.categoryId = categoryId;
