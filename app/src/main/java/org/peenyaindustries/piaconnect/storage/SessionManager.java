@@ -4,7 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 
-import org.peenyaindustries.piaconnect.activities.MainActivity;
+import org.peenyaindustries.piaconnect.activities.RegisterActivity;
 
 import java.util.HashMap;
 
@@ -75,7 +75,7 @@ public class SessionManager {
     //Check User Login Status
     public void checkLogin() {
         if (!isLoggedIn()) {
-            Intent i = new Intent(_context, MainActivity.class);
+            Intent i = new Intent(_context, RegisterActivity.class);
             //Closing all activities
             i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             //Add new flag to start new activity
@@ -92,7 +92,7 @@ public class SessionManager {
         editor.commit();
 
         // After logout redirect user to Login Activity
-        Intent i = new Intent(_context, MainActivity.class);
+        Intent i = new Intent(_context, RegisterActivity.class);
         // Closing all the Activities
         i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 

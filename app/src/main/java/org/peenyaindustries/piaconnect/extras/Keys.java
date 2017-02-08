@@ -30,5 +30,16 @@ public class Keys {
     public static final String POST_IMAGE = "accesspress-mag-block-small-thumb";
     public static final String URL = "url";
 
+    /**
+     * Authentication
+     */
+    public static final String RESPONSE_CODE = "code";
+    public static final String RESPONSE_MESSAGE = "message";
+
+    public static final String RESPONSE_NAME = "name";
+    public static final String RESPONSE_EMAIL = "email";
+    public static final String RESPONSE_MOBILE = "mobile";
+    public static final String RESPONSE_ROLE = "role";
+
 
 }

@@ -3,6 +3,7 @@ package org.peenyaindustries.piaconnect.network;
 import android.graphics.Bitmap;
 import android.util.LruCache;
 
+import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.Volley;
@@ -30,6 +31,7 @@ public class VolleySingleton {
                 cache.put(url, bitmap);
             }
         });
+
     }
 
     public static VolleySingleton getInstance() {
@@ -46,4 +48,9 @@ public class VolleySingleton {
     public ImageLoader getImageLoader() {
         return mImageLoader;
     }
+
+    public <T> void addToRequestQueue(Request<T> request) {
+        mRequestQueue.add(request);
+    }
+
 }

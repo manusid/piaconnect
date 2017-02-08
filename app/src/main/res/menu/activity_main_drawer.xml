@@ -3,22 +3,51 @@
 
     <group android:checkableBehavior="single">
         <item
-            android:id="@+id/nav_camera"
-            android:icon="@drawable/ic_menu_camera"
-            android:title="Import" />
+            android:id="@+id/nav_news"
+            android:icon="@drawable/ic_news"
+            android:title="News" />
         <item
-            android:id="@+id/nav_gallery"
-            android:icon="@drawable/ic_menu_gallery"
-            android:title="Gallery" />
+            android:id="@+id/nav_industry"
+            android:icon="@drawable/ic_industry"
+            android:title="Industry" />
         <item
-            android:id="@+id/nav_slideshow"
-            android:icon="@drawable/ic_menu_slideshow"
-            android:title="Slideshow" />
+            android:id="@+id/nav_events"
+            android:icon="@drawable/ic_event"
+            android:title="Events" />
         <item
-            android:id="@+id/nav_manage"
-            android:icon="@drawable/ic_menu_manage"
-            android:title="Tools" />
+            android:id="@+id/nav_jobs"
+            android:icon="@drawable/ic_job"
+            android:title="Jobs" />
     </group>
+
+    <item android:title="About">
+        <menu>
+            <item
+                android:id="@+id/nav_pia"
+                android:icon="@drawable/ic_p"
+                android:title="Peenys Industries Association" />
+            <item
+                android:id="@+id/nav_pia_office_bearers"
+                android:icon="@drawable/ic_office"
+                android:title="PIA Office Bearers" />
+            <item
+                android:id="@+id/nav_managing_council_members"
+                android:icon="@drawable/ic_council"
+                android:title="Managing Council Members" />
+            <item
+                android:id="@+id/nav_panel_list"
+                android:icon="@drawable/ic_list"
+                android:title="Panel List - 2016-17" />
+            <item
+                android:id="@+id/nav_invitee_members"
+                android:icon="@drawable/ic_invitee"
+                android:title="Invitee Members" />
+            <item
+                android:id="@+id/nav_past_presidents"
+                android:icon="@drawable/ic_past_presidents"
+                android:title="Past Presidents of PIA" />
+        </menu>
+    </item>
 
     <item android:title="Communicate">
         <menu>
@@ -27,9 +56,13 @@
                 android:icon="@drawable/ic_menu_share"
                 android:title="Share" />
             <item
-                android:id="@+id/nav_send"
-                android:icon="@drawable/ic_menu_send"
-                android:title="Send" />
+                android:id="@+id/nav_faq"
+                android:icon="@drawable/ic_help"
+                android:title="FAQ's" />
+            <item
+                android:id="@+id/nav_help"
+                android:icon="@drawable/ic_feedback"
+                android:title="Help &amp; Feedback" />
         </menu>
     </item>
 

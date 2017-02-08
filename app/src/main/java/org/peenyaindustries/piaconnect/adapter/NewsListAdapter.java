@@ -20,7 +20,6 @@ import org.peenyaindustries.piaconnect.models.Post;
 import org.peenyaindustries.piaconnect.network.VolleySingleton;
 import org.peenyaindustries.piaconnect.piaconnect.MyApplication;
 import org.peenyaindustries.piaconnect.storage.SessionManager;
-import org.peenyaindustries.piaconnect.utilities.L;
 
 import java.util.ArrayList;
 
@@ -54,10 +53,12 @@ public class NewsListAdapter extends RecyclerView.Adapter<NewsListAdapter.ViewHo
     public void onBindViewHolder(ViewHolder holder, int position) {
 
         Post postModel = postArrayList.get(position);
-        L.Log("CategoryId Intitated" + categoryId);
+
+        if (categoryId.equals("empty")) {
+            categoryId = "1";
+        }
 
         ArrayList<Category> categoryArrayList = MyApplication.getWritableDatabase().readCategoryById(categoryId);
-
 
         if (categoryArrayList.size() != 0) {
             for (int i = 0; i < categoryArrayList.size(); i++) {

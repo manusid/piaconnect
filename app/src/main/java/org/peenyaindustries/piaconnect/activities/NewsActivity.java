@@ -1,10 +1,12 @@
 package org.peenyaindustries.piaconnect.activities;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.MenuItem;
 
 import org.peenyaindustries.piaconnect.R;
 import org.peenyaindustries.piaconnect.adapter.ViewPagerAdapter;
@@ -16,7 +18,7 @@ public class NewsActivity extends AppCompatActivity {
     private TabLayout tabLayout;
     private ViewPager viewPager;
 
-    private int icons[] = {R.drawable.ic_menu_camera, R.drawable.ic_menu_gallery};
+    private int icons[] = {R.drawable.ic_news, R.drawable.ic_category};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,6 +27,11 @@ public class NewsActivity extends AppCompatActivity {
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setHomeButtonEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_arrow_back);
 
         //Disable Title on Toolbar
         getSupportActionBar().setDisplayShowTitleEnabled(false);
@@ -47,5 +54,28 @@ public class NewsActivity extends AppCompatActivity {
     public void setUpTabIcons() {
         tabLayout.getTabAt(0).setIcon(icons[0]);
         tabLayout.getTabAt(1).setIcon(icons[1]);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                this.finish();
+                Intent i = new Intent(NewsActivity.this, MainActivity.class);
+                i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(i);
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
+    @Override
+    public void onBackPressed() {
+        this.finish();
+        Intent i = new Intent(NewsActivity.this, MainActivity.class);
+        i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        startActivity(i);
+        super.onBackPressed();
     }
 }

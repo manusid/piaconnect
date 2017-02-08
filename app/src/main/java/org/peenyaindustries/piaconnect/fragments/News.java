@@ -20,7 +20,6 @@ import org.peenyaindustries.piaconnect.adapter.NewsListAdapter;
 import org.peenyaindustries.piaconnect.models.Category;
 import org.peenyaindustries.piaconnect.models.Post;
 import org.peenyaindustries.piaconnect.piaconnect.MyApplication;
-import org.peenyaindustries.piaconnect.utilities.L;
 
 import java.util.ArrayList;
 
@@ -85,14 +84,11 @@ public class News extends Fragment implements SearchView.OnQueryTextListener {
 
         Bundle extras = getActivity().getIntent().getExtras();
 
-        if (extras.getString("id") != null) {
+        if (extras != null) {
             id = extras.getString("id");
         } else {
             id = "empty";
         }
-
-        L.Log("" + extras.getString("id"));
-
 
         newsListView = (RecyclerView) view.findViewById(R.id.newsListView);
         newsListView.setHasFixedSize(true);
@@ -123,7 +119,7 @@ public class News extends Fragment implements SearchView.OnQueryTextListener {
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        //save the movie list to a parcelable prior to rotation or configuration change
+        //save the data list to a parcelable prior to rotation or configuration change
         outState.putParcelableArrayList(STATE_POST, postArrayList);
     }
 
